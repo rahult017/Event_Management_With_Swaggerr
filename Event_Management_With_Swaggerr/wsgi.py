@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Event_Management_With_Swaggerr.settings')
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE", "Event_Management_With_Swaggerr.settings"
+)
 
 application = get_wsgi_application()
