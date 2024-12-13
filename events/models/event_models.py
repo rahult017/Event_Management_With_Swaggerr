@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models.users_models import UserMaster
-from simple_history.models import HistoricalRecords  # type: ignore
+from simple_history.models import HistoricalRecords
 
 
 class Event(models.Model):
