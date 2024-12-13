@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
+    "accounts",
+    "events",
 ]
 
 MIDDLEWARE = [
@@ -210,4 +212,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=20),
     "SLIDING_TOKEN_LIFETIME_CLAIM": "exp",
     "SLIDING_TOKEN_REFRESH_LIFETIME_CLAIM": "refresh_exp",
+    "BLACKLIST_AFTER_ROTATION": True,
 }
+AUTH_USER_MODEL = "accounts.UserMaster"
