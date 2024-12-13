@@ -1,0 +1,5 @@
+class Role:
+    SUPER_ADMIN = "SUPER_ADMIN"
+    ADMIN = "ADMIN"
+    ORGANIZER = "ORGANIZER"
+    ATTENDEE = "ATTENDEE"

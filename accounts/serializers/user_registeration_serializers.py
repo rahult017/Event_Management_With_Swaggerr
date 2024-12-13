@@ -30,11 +30,19 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         #     "blank": "Password field cannot be blank.",
         # },
     )
+    is_admin = serializers.BooleanField(required=False)
+    is_staff = serializers.BooleanField(required=False)
     class Meta:
         model = User
-        fields = ['id', 'first_name',"last_name", 'email', 'role', 'password']
+        fields = ['id', 'first_name',"last_name", 'email', 'role', 'password',"is_admin", "is_staff"]
         #extra_kwargs = {'password': {'write_only': True}}
+        optional_fields = ["is_admin", "is_staff"]
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
+        password = validated_data.pop("password")
+        user = User.objects.create_user(
+            **validated_data, password=password
+        )  # Create the user
+        # user.set_password(password)  # Set the password
+        user.save()
         return user

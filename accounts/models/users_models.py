@@ -1,14 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from simple_history.models import HistoricalRecords
-
+from accounts.managers import CustomManager
+from accounts.models.role_master_models import RoleMaster
 
 class UserMaster(AbstractUser):
-    ROLE_CHOICES = [
-        ("admin", "Admin"),
-        ("organizer", "Event Organizer"),
-        ("attendee", "Attendee"),
-    ]
     first_name = models.CharField(
         max_length=255, null=True, blank=True, help_text="First name of the user."
     )
@@ -16,8 +12,28 @@ class UserMaster(AbstractUser):
         max_length=255, null=True, blank=True, help_text="Last name of the user."
     )
     email = models.EmailField(max_length=100, unique=True, db_index=True)
-    role = models.CharField(max_length=50, choices=ROLE_CHOICES, default="attendee")
+    role = models.ForeignKey(
+        RoleMaster,
+        on_delete=models.DO_NOTHING,
+        null=True,
+        blank=True,
+        default="ATTENDEE",
+        related_name="user_role",
+    )
+    is_active = models.BooleanField(
+        default=True, help_text="Whether the user is active."
+    )
+    is_superuser = models.BooleanField(
+        default=False, help_text="Whether the user is a superuser."
+    )
+    is_staff = models.BooleanField(
+        default=False, help_text="Whether the user is a staff member."
+    )
+    is_admin = models.BooleanField(
+        default=False, help_text="Whether the user is an admin."
+    )
     USERNAME_FIELD = "email"
+    username = None
     REQUIRED_FIELDS = [
         "first_name",
         "last_name",
@@ -38,6 +54,7 @@ class UserMaster(AbstractUser):
         verbose_name="Deleted At",
         help_text="Date and time when the role was deleted.",
     )
+    objects = CustomManager()
     history = HistoricalRecords()
 
     @property

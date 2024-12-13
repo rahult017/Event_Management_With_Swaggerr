@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import AllowAny
 
-from accounts.serializers.user_serializer import UserRegistrationSerializer
+from accounts.serializers.user_registeration_serializers import UserRegistrationSerializer
 
 from utility.custom_response import create_response
 from utility.serializers_errors import serializer_error
