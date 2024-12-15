@@ -33,3 +33,6 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def available_slots(self):
+        return self.max_attendees - self.attendees.count()
