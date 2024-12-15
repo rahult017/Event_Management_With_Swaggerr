@@ -61,6 +61,7 @@ The Multi-User Event Management System API enables secure, scalable, and efficie
    ```
 
 2. **Set Up Docker**:
+   Please follow .env.sample to set .env
    Create a `.env` file in the project root with the following configuration:
    ```env
    SECRET_KEY=your_jwt_secret_key
