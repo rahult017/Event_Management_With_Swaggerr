@@ -49,8 +49,8 @@ The Multi-User Event Management System API is designed to facilitate the creatio
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-repo/event-management-api.git
-   cd event-management-api
+   git clone https://github.com/rahult017/Event_Management_With_Swaggerr.git
+   cd Event_Management_With_Swaggerr
    ```
 
 2. **Set Up Virtual Environment**:
