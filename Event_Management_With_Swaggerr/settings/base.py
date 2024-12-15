@@ -223,24 +223,30 @@ AUTH_USER_MODEL = "accounts.UserMaster"
 
 SWAGGER_SETTINGS = {
     "exclude_namespaces": [],
-    "api_version": '0.1',
+    "api_version": "0.1",
     "api_path": "/",
     "enabled_methods": [
-        'get',
-        'post',
-        'put',
-        'patch',
-        'delete'
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
     ],
-    "api_key": '',
+    "api_key": "",
     "is_authenticated": True,
     "is_superuser": False,
-
-    'SECURITY_DEFINITIONS': {
-        "api_key": {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
             "type": "apiKey",
             "name": "Authorization",
             "in": "header",
+            "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {your JWT token}'"
         },
     },
+    "USE_SESSION_AUTH": False,
+    "DEFAULT_AUTO_SCHEMA_CLASS": "drf_yasg.inspectors.SwaggerAutoSchema",
+    "DEFAULTS": {
+        "security": [{"Bearer": []}],
+    }
 }
+

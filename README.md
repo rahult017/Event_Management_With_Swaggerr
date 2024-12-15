@@ -1,7 +1,7 @@
 # Multi-User Event Management System API
 
 ## Overview
-The Multi-User Event Management System API is designed to facilitate the creation, management, and participation in events for multiple users with distinct roles: admin, event organizer, and attendee. This system prioritizes security, scalability, and performance.
+The Multi-User Event Management System API enables secure, scalable, and efficient event management for multiple users with distinct roles: admin, event organizer, and attendee. The system offers user and event management features with role-based access control, ensuring security and performance.
 
 ---
 
@@ -47,59 +47,73 @@ The Multi-User Event Management System API is designed to facilitate the creatio
 
 ## Installation
 
+### Prerequisites
+- Docker
+- Docker Compose
+- Poetry
+
+### Steps
+
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/rahult017/Event_Management_With_Swaggerr.git
    cd Event_Management_With_Swaggerr
    ```
 
-2. **Set Up Virtual Environment**:
-   ```bash
-   python -m venv env
-   source env/bin/activate   # On Windows: env\Scripts\activate
+2. **Set Up Docker**:
+   Create a `.env` file in the project root with the following configuration:
+   ```env
+   SECRET_KEY=your_jwt_secret_key
+   DATABASE_URL=postgres://username:password@db:5432/db_name
    ```
 
-3. **Install Dependencies**:
+3. **Set Up Poetry**:
+   If Poetry is not already installed, install it by running:
    ```bash
-   pip install poetry
+   curl -sSL https://install.python-poetry.org | python3 -
+   ```
+
+4. **Install Dependencies Using Poetry**:
+   Install project dependencies:
+   ```bash
    poetry install
    ```
 
-4. **Configure Environment Variables**:
-    - Please check .env.sample for more details.
-   - Create a `.env` file in the project root with the following:
-     ```env
-     SECRET_KEY=your_jwt_secret_key
-     DATABASE_URL=your_database_url
-     ```
-
-5. **Apply Migrations**:
+5. **Build Docker Containers**:
+   Use Docker Compose to build and start the containers:
    ```bash
-   python manage.py migrate
+   docker-compose up --build
    ```
 
-6. **Run the Application**:
+6. **Apply Migrations**:
+   Access the container and run migrations:
    ```bash
-   python manage.py runserver
+   docker-compose exec web poetry run python manage.py migrate
    ```
+
+7. **Access the Application**:
+   Open your browser and navigate to `http://localhost:8000/` to access the API.
 
 ---
 
 ## API Endpoints
 
 ### Authentication
-- `POST /accounts/register` - Register a new user.
-- `POST /accounts/login` - Authenticate and retrieve a token.
+- `POST /accounts/register/` - Register a new user.
+- `POST /accounts/login/` - Authenticate and retrieve a token.
+- `POST /accounts/logout/` - Logout a user.
+- `POST /accounts/renew-token/` - Renew authentication token.
+- `POST /accounts/verify-token/` - Verify token validity.
 
 ### User Management
-- `GET /users` - List all users (Admin only).
-- `POST /users` - Create a new user (Admin only).
-- `PUT /users/{id}` - Update a user (Admin only).
-- `DELETE /users/{id}` - Delete a user (Admin only).
+- `GET /accounts/users/` - List all users (Admin only).
+- `POST /accounts/users/` - Create a new user (Admin only).
+- `PUT /accounts/users/{id}` - Update a user (Admin only).
+- `DELETE /accounts/users/{id}` - Delete a user (Admin only).
 
 ### Event Management
-- `GET /events` - List all events with filters.
-- `POST /events` - Create a new event (Event Organizer only).
+- `GET /events/` - List all events with filters.
+- `POST /events/` - Create a new event (Event Organizer only).
 - `PUT /events/{id}` - Update an event (Event Organizer or Admin).
 - `DELETE /events/{id}` - Delete an event (Event Organizer or Admin).
 - `POST /events/{id}/join` - Join an event (Attendee only).
@@ -120,10 +134,70 @@ project_root/
 │   ├── serializers.py
 │   ├── views.py
 │   └── urls.py
+├── docker-compose.yml
+├── Dockerfile
+├── pyproject.toml
+├── poetry.lock
 ├── requirements.txt
 ├── manage.py
 ├── .env
 └── README.md
+```
+
+---
+
+## Docker Setup
+
+### Dockerfile
+```dockerfile
+FROM python:3.9
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Set the PATH to include Poetry
+ENV PATH="/root/.local/bin:$PATH"
+
+# Copy poetry files and install dependencies
+COPY pyproject.toml poetry.lock /app/
+RUN poetry install
+
+# Copy the current directory contents into the container
+COPY . /app/
+
+# Expose port
+EXPOSE 8000
+
+# Run the application
+CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+```
+
+### docker-compose.yml
+```yaml
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db_name
+    ports:
+      - "5432:5432"
 ```
 
 ---
@@ -151,7 +225,7 @@ project_root/
 ## Testing
 Run the test suite:
 ```bash
-pytest
+docker-compose exec web poetry run pytest
 ```
 
 ---

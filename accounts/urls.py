@@ -6,6 +6,7 @@ from accounts.views import (
     user_registration_viewset,
     user_login_viewset,
     user_logout_viewset,
+    user_viewset,
 )
 
 urlpatterns = [
@@ -27,5 +28,11 @@ urlpatterns = [
     ),
     path("logout/",user_logout_viewset.LogoutView.as_view(),
         name="logout",
+    ),
+    path('users/', user_viewset.UserListCreateAPIView.as_view(), 
+         name='user-list-create',
+    ),
+    path('users/<int:pk>/', user_viewset.UserDetailAPIView.as_view(), 
+         name='user-detail',
     ),
 ]

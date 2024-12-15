@@ -34,7 +34,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     is_staff = serializers.BooleanField(required=False)
     class Meta:
         model = User
-        fields = ['id', 'first_name',"last_name", 'email', 'role', 'password',"is_admin", "is_staff"]
+        fields = ['id', 'first_name',"last_name", 'email', 'password',"is_admin", "is_staff"]
         #extra_kwargs = {'password': {'write_only': True}}
         optional_fields = ["is_admin", "is_staff"]
 
