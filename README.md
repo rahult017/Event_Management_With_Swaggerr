@@ -66,6 +66,7 @@ The Multi-User Event Management System API is designed to facilitate the creatio
    ```
 
 4. **Configure Environment Variables**:
+    - Please check .env.sample for more details.
    - Create a `.env` file in the project root with the following:
      ```env
      SECRET_KEY=your_jwt_secret_key
@@ -108,18 +109,17 @@ The Multi-User Event Management System API is designed to facilitate the creatio
 ## Directory Structure
 ```
 project_root/
-├── app/
-│   ├── auth/
-│   ├── events/
-│   ├── users/
+├── accounts/
 │   ├── models.py
 │   ├── serializers.py
 │   ├── views.py
 │   └── urls.py
-├── tests/
-│   ├── test_auth.py
-│   ├── test_events.py
-│   ├── test_users.py
+    └── tests.py
+├── events/
+│   ├── models.py
+│   ├── serializers.py
+│   ├── views.py
+│   └── urls.py
 ├── requirements.txt
 ├── manage.py
 ├── .env
@@ -157,8 +157,8 @@ pytest
 ---
 
 ## Documentation
-- Swagger: Available at `/docs`.
-- Redoc: Available at `/redoc`.
+- Swagger UI: Available at `/`.
+- Redoc: Available at `/redoc/`.
 
 ---
 
